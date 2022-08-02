@@ -19,6 +19,12 @@ Breadcrumbs::for('books', function (BreadcrumbTrail $trail) {
     $trail->push('Buku', route('books.index'));
 });
 
+// Home > Books
+Breadcrumbs::for('members', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Anggota', route('members.index'));
+});
+
 // Home > Users
 Breadcrumbs::for('users', function (BreadcrumbTrail $trail) {
     $trail->parent('home');

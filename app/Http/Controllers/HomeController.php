@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\{Book, Member};
 
 class HomeController extends Controller
 {
@@ -24,7 +24,9 @@ class HomeController extends Controller
     public function index()
     {
         return view('home', [
-            'title' => 'Dashboard'
+            'title' => 'Dashboard',
+            'books' => Book::all(),
+            'members' => Member::all(),
         ]);
     }
 }

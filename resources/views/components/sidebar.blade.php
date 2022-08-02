@@ -39,6 +39,14 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('members.index') }}" class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+                Anggota
+            </p>
+            </a>
+        </li>
+        <li class="nav-item">
             @can('user-list')
             <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user"></i>

@@ -1,11 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\{RoleController, UserController, BookController, MemberController};
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\BooklocationController;
 
 // Login Routes ...
 Route::get('', [LoginController::class, 'showLoginForm']);
@@ -24,9 +21,13 @@ Route::middleware('auth')->group(function () {
     // Buku
     Route::resources(['books' => BookController::class]);
     Route::post('books/delete-selected', [BookController::class, 'deleteSelected'])->name('books.deleteSelected');
+    // Anggota
+    Route::resources(['members' => MemberController::class]);
+    Route::post('members/delete-selected', [MemberController::class, 'deleteSelected'])->name('members.deleteSelected');
     // Lokasi Buku
     Route::resources(['booklocations' => BooklocationController::class]);
     Route::post('booklocations/delete-selected', [BooklocationController::class, 'deleteSelected'])->name('booklocations.deleteSelected');
 
+    // Roles
     Route::resources(['roles' => RoleController::class]);
 });
