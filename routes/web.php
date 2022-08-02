@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{RoleController, UserController, BookController, MemberController};
+use App\Http\Controllers\{RoleController, UserController, BookController, MemberController, BooklocationController};
 use App\Http\Controllers\Auth\LoginController;
 
 // Login Routes ...

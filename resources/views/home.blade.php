@@ -61,7 +61,7 @@
                 <div class="inner">
                 <h3>44</h3>
 
-                <p>User Registrations</p>
+                <p>Buku Di Pinjam</p>
                 </div>
                 <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -76,7 +76,7 @@
                 <div class="inner">
                 <h3>65</h3>
 
-                <p>Unique Visitors</p>
+                <p>Buku Telat Kembali</p>
                 </div>
                 <div class="icon">
                 <i class="ion ion-pie-graph"></i>

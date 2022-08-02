@@ -45,14 +45,14 @@ class BooklocationController extends Controller
             ['name' => request('name')]);
     }
 
-    public function edit(Booklocation $bookLocation)
+    public function edit(Booklocation $booklocation)
     {
-        return response()->json($bookLocation);
+        return response()->json($booklocation);
     }
 
-    public function destroy(Booklocation $bookLocation)
+    public function destroy(Booklocation $booklocation)
     {
-        $bookLocation->delete();
+        $booklocation->delete();
         toast('Data lokasi buku berhasil dihapus!', 'success');
         return redirect()->back();
     }
