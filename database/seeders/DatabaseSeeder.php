@@ -18,8 +18,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            CategoryTableSeeder::class,
         ]);
-        \App\Models\Item::factory(100)->create();
+        // \App\Models\Book::factory(100)->create();
     }
 }

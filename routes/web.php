@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\BooklocationController;
 
 // Login Routes ...
 Route::get('', [LoginController::class, 'showLoginForm']);
@@ -20,16 +18,15 @@ Route::post('logout',  [LoginController::class,'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Pengguna
     Route::resources(['users' => UserController::class]);
     Route::post('users/{user:id}/status', [UserController::class, 'changeStatus'])->name('users.status');
-    Route::resources(['items' => ItemController::class]);
-    Route::post('items/delete-selected', [ItemController::class, 'deleteSelected'])->name('items.deleteSelected');
-
-    Route::resources(['categories' => CategoryController::class]);
-    Route::post('categories/delete-selected', [CategoryController::class, 'deleteSelected'])->name('categories.deleteSelected');
-
-    Route::resources(['accounts' => AccountController::class]);
-    Route::post('accounts/delete-selected', [AccountController::class, 'deleteSelected'])->name('accounts.deleteSelected');
+    // Buku
+    Route::resources(['books' => BookController::class]);
+    Route::post('books/delete-selected', [BookController::class, 'deleteSelected'])->name('books.deleteSelected');
+    // Lokasi Buku
+    Route::resources(['booklocations' => BooklocationController::class]);
+    Route::post('booklocations/delete-selected', [BooklocationController::class, 'deleteSelected'])->name('booklocations.deleteSelected');
 
     Route::resources(['roles' => RoleController::class]);
 });

@@ -12,8 +12,7 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-            {{-- <li class="breadcrumb-item"><a href="#">{{ Breadcrumbs::render('home') }}</a></li> --}}
-            <li class="breadcrumb-item active">{{ Breadcrumbs::render('items') }}</li>
+            <li class="breadcrumb-item active">{{ Breadcrumbs::render('books') }}</li>
         </ol>
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -25,6 +24,9 @@
     <div class="row">
         <div class="col-12">
             @can('item-create')
+            <button class="btn btn-sm btn-success">Impor <i class="fa fa-file-import"></i></button>
+            <button class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></button>
+            <button class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></button>
             <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
             <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
             @endcan
@@ -36,21 +38,20 @@
     @include('components.alerts')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Data Barang</h3>
+            <h3 class="card-title">Data Buku</h3>
         </div>
         <!-- /.card-header -->
-        <div class="card-body">
-            <table id="data-table" class="table table-bordered table-striped">
-                <thead class="table-dark">
+        <div class="card-body table-responsive">
+            <table id="data-table" class="table table-sm table-bordered table-striped">
+                <thead>
                     <tr>
                         <th style="width: 1%">No.</th>
-                        <th><input type="checkbox" name="main_checkbox"><label></label></th>
-                        <th>Nama Barang</th>
-                        <th>Harga</th>
+                        <th class="text-center"><input type="checkbox" name="main_checkbox"><label></label></th>
+                        <th>Nama Buku</th>
                         <th>Kuantitas</th>
-                        <th>Kategori</th>
+                        <th>Lokasi</th>
                         <th>Deskripsi</th>
-                        <th class="text-center" style="width: 15%"><i class="fas fa-cogs"></i> </th>
+                        <th class="text-center" style="width: 5%"><i class="fas fa-cogs"></i> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,15 +76,11 @@
             </div>
             <form method="post" id="itemForm" name="itemForm">
                 @csrf
-                <input type="hidden" name="item_id" id="item_id">
+                <input type="hidden" name="book_id" id="book_id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name">Nama Barang</label>
-                        <input type="text" class="form-control form-control-sm mr-2" name="name" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Harga</label>
-                        <input type="number" class="form-control form-control-sm mr-2" name="price" id="price" required>
+                        <label for="title">Judul Buku</label>
+                        <input type="text" class="form-control form-control-sm mr-2" name="title" id="title" required>
                     </div>
                     <div class="form-group">
                         <label for="quantity">Kuantitas</label>
@@ -94,17 +91,21 @@
                         <textarea type="text" class="form-control form-control-sm mr-2" name="description" id="description"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="category_id">Kategori</label>
-                        <select name="category_id" id="category_id" class="form-control select2" required>
+                        <label for="image">Gambar</label>
+                        <input type="file" class="form-control form-control-sm mr-2" name="image" id="image">
+                    </div>
+                    <div class="form-group">
+                        <label for="booklocation_id">Kategori</label>
+                        <select name="booklocation_id" id="booklocation_id" class="form-control form-control-sm select2" required>
                             <option selected disabled>Pilih kategori barang</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @foreach ($booklocation as $data)
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save</button>
+                    <button type="submit" class="btn btn-sm btn-primary" id="saveBtn" value="create">Save</button>
                 </div>
             </form>
         </div>
@@ -148,16 +149,15 @@
                 serverSide: true,
                 responsive: true,
 
-                ajax: "{{ route('items.index') }}",
+                ajax: "{{ route('books.index') }}",
                 columns: [
-                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-                    {data: 'name', name: 'name'},
-                    {data: 'price', name: 'price'},
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'dt-body-center'},
+                    {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false, className: 'dt-body-center'},
+                    {data: 'title', name: 'title'},
                     {data: 'quantity', name: 'quantity'},
-                    {data: 'category', name: 'category.name'},
+                    {data: 'booklocation', name: 'booklocation.name'},
                     {data: 'description', name: 'description'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: false, searchable: false, className: 'dt-body-center'},
                 ],
             }).on('draw', function(){
                 $('input[name="checkbox"]').each(function(){this.checked = false;});
@@ -173,26 +173,25 @@
                 $('#saveBtn').html("Simpan");
                 $('#item_id').val('');
                 $('#itemForm').trigger("reset");
-                $('#modal-title').html("Tambah Album Kendaraan");
+                $('#modal-title').html("Tambah Buku");
                 $('#modal-md').modal('show');
             });
 
-            $('body').on('click', '#editItem', function () {
-                var item_id = $(this).data('id');
-                $.get("{{ route('items.index') }}" +'/' + item_id +'/edit', function (data) {
+            $('body').on('click', '#editBook', function () {
+                var book_id = $(this).data('id');
+                $.get("{{ route('books.index') }}" +'/' + book_id +'/edit', function (data) {
                     $('#modal-md').modal('show');
                     setTimeout(function () {
-                        $('#name').focus();
+                        $('#title').focus();
                     }, 500);
                     $('#modal-title').html("Edit Barang");
                     $('#saveBtn').removeAttr('disabled');
                     $('#saveBtn').html("Simpan");
-                    $('#item_id').val(data.id);
-                    $('#name').val(data.name);
-                    $('#price').val(data.price);
+                    $('#book_id').val(data.id);
+                    $('#title').val(data.title);
                     $('#quantity').val(data.quantity);
                     $('#description').val(data.description);
-                    $('#category_id').val(data.category_id);
+                    $('#booklocation_id').val(data.booklocation_id);
                 })
             });
 
@@ -201,11 +200,10 @@
                 var formData = new FormData($('#itemForm')[0]);
                 $.ajax({
                     data: formData,
-                    url: "{{ route('items.store') }}",
+                    url: "{{ route('books.store') }}",
                     contentType : false,
                     processData : false,
                     type: "POST",
-                    // dataType: 'json',
                     success: function (data) {
                         $('#saveBtn').attr('disabled', 'disabled');
                         $('#saveBtn').html('Simpan ...');
@@ -214,8 +212,12 @@
                         table.draw();
                     },
                     error: function (data) {
-                        alert("Data masih kosong");
-                        console.log('Error:', data);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Data masih kosong!',
+                        });
+                        // console.log('Error:', data);
                     }
                 });
             });
@@ -255,7 +257,7 @@
                $('input[name="checkbox"]:checked').each(function(){
                    checkedItem.push($(this).data('id'));
                });
-               var url = '{{ route("items.deleteSelected") }}';
+               var url = '{{ route("books.deleteSelected") }}';
                if(checkedItem.length > 0){
                     swal.fire({
                         title:'Apakah yakin?',

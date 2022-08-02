@@ -23,7 +23,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('items.index') }}" class="nav-link {{ request()->routeIs('items.*') ? 'active' : '' }}">
+            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
             <i class="nav-icon fa fa-book "></i>
             <p>
                 Buku
@@ -31,18 +31,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-box"></i>
+            <a href="{{ route('booklocations.index') }}" class="nav-link {{ request()->routeIs('booklocations.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-book-open"></i>
             <p>
-                Kategori Barang
-            </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('accounts.index') }}" class="nav-link {{ request()->routeIs('accounts.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-box"></i>
-            <p>
-                Akun
+                Lokasi Buku
             </p>
             </a>
         </li>

@@ -12,8 +12,7 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-            {{-- <li class="breadcrumb-item"><a href="#">{{ Breadcrumbs::render('home') }}</a></li> --}}
-            <li class="breadcrumb-item active">{{ Breadcrumbs::render('items') }}</li>
+            <li class="breadcrumb-item active">{{ Breadcrumbs::render('books') }}</li>
         </ol>
         </div><!-- /.col -->
     </div><!-- /.row -->
@@ -24,11 +23,8 @@
 <div class="container-fluid mb-3 d-flex justify-content-end">
     <div class="row">
         <div class="col-12">
-            {{-- @can('student-create') --}}
-                {{-- <a href="{{ route('accounts.create') }}" class="btn btn-sm btn-primary">Tambah <i class="fa fa-plus"></i></a> --}}
-                <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
-                <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
-            {{-- @endcan --}}
+            <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
+            <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
         </div>
     </div>
 </div>
@@ -37,7 +33,7 @@
     @include('components.alerts')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">{{ $title ?? '' }}</h3>
+            <h3 class="card-title">Data Lokasi Buku</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -46,9 +42,7 @@
                     <tr>
                         <th style="width: 1%">No.</th>
                         <th style="width: 1%"><input type="checkbox" name="main_checkbox"><label></label></th>
-                        <th>Kode</th>
-                        <th>Nama Akun</th>
-                        <th>Keterangan</th>
+                        <th>Nama Lokasi</th>
                         <th class="text-center" style="width: 15%"><i class="fas fa-cogs"></i> </th>
                     </tr>
                 </thead>
@@ -72,21 +66,13 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" id="itemForm" name="itemForm">
+            <form method="post" id="itemForm" name="itemForm" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="account_id" id="account_id">
+                <input type="text" name="booklocation_id" id="booklocation_id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="code">Nomor Kode</label>
-                        <input type="number" class="form-control mr-2" name="code" id="code" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Nama Kategori</label>
+                        <label for="name">Nama Lokasi Buku</label>
                         <input type="text" class="form-control mr-2" name="name" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Keterangan</label>
-                        <textarea type="text" class="form-control mr-2" name="description" id="description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -133,13 +119,11 @@
             serverSide: true,
             responsive: true,
 
-            ajax: "{{ route('accounts.index') }}",
+            ajax: "{{ route('booklocations.index') }}",
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-                {data: 'code', name: 'code'},
                 {data: 'name', name: 'name'},
-                {data: 'description', name: 'description'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
         }).on('draw', function(){
@@ -150,19 +134,19 @@
 
         $('#createNewItem').click(function () {
             setTimeout(function () {
-                $('#code').focus();
+                $('#name').focus();
             }, 500);
             $('#saveBtn').removeAttr('disabled');
             $('#saveBtn').html("Simpan");
-            $('#account_id').val('');
+            $('#booklocation_id').val('');
             $('#itemForm').trigger("reset");
-            $('#modal-title').html("Tambah Akun");
+            $('#modal-title').html("Tambah Kategori");
             $('#modal-md').modal('show');
         });
 
         $('body').on('click', '#editItem', function () {
-            var account_id = $(this).data('id');
-            $.get("{{ route('accounts.index') }}" +'/' + account_id +'/edit', function (data) {
+            var booklocation_id = $(this).data('id');
+            $.get("{{ route('booklocations.index') }}" +'/' + booklocation_id +'/edit', function (data) {
                 $('#modal-md').modal('show');
                 setTimeout(function () {
                     $('#name').focus();
@@ -170,10 +154,8 @@
                 $('#modal-title').html("Edit kategori");
                 $('#saveBtn').removeAttr('disabled');
                 $('#saveBtn').html("Simpan");
-                $('#account_id').val(data.id);
-                $('#code').val(data.code);
+                $('#booklocation_id').val(data.id);
                 $('#name').val(data.name);
-                $('#description').val(data.description);
             })
         });
 
@@ -181,14 +163,11 @@
             e.preventDefault();
             var formData = new FormData($('#itemForm')[0]);
             $.ajax({
-                // enctype: 'multipart/form-data',
-                // data: $('#itemForm').serialize(),
                 data: formData,
-                url: "{{ route('accounts.store') }}",
+                url: "{{ route('booklocations.store') }}",
                 contentType : false,
                 processData : false,
                 type: "POST",
-                // dataType: 'json',
                 success: function (data) {
                     $('#saveBtn').attr('disabled', 'disabled');
                     $('#saveBtn').html('Simpan ...');
@@ -238,7 +217,7 @@
             $('input[name="checkbox"]:checked').each(function(){
                 checkedItem.push($(this).data('id'));
             });
-            var url = '{{ route("accounts.deleteSelected") }}';
+            var url = '{{ route("booklocations.deleteSelected") }}';
             if(checkedItem.length > 0){
                 swal.fire({
                     title:'Apakah yakin?',
@@ -255,7 +234,6 @@
                     if(result.value){
                         $.post(url,{id:checkedItem},function(data){
                             if(data.code == 1){
-                                // $('#data-table').DataTable().ajax.reload(null, true);
                                 table.draw();
                                 toastr.success(data.msg);
                             }
