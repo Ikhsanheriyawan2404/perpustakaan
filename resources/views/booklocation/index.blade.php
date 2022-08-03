@@ -36,14 +36,14 @@
             <h3 class="card-title">Data Lokasi Buku</h3>
         </div>
         <!-- /.card-header -->
-        <div class="card-body">
-            <table id="data-table" class="table table-bordered table-striped">
-                <thead class="table-dark">
+        <div class="card-body table-responsive">
+            <table id="data-table" class="table table-sm table-bordered table-striped">
+                <thead>
                     <tr>
                         <th style="width: 1%">No.</th>
                         <th style="width: 1%"><input type="checkbox" name="main_checkbox"><label></label></th>
                         <th>Nama Lokasi</th>
-                        <th class="text-center" style="width: 15%"><i class="fas fa-cogs"></i> </th>
+                        <th class="text-center" style="width: 5%"><i class="fas fa-cogs"></i> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,7 +68,7 @@
             </div>
             <form method="post" id="itemForm" name="itemForm" enctype="multipart/form-data">
                 @csrf
-                <input type="text" name="booklocation_id" id="booklocation_id">
+                <input type="hidden" name="booklocation_id" id="booklocation_id">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Nama Lokasi Buku</label>
@@ -124,7 +124,7 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
                 {data: 'name', name: 'name'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                {data: 'action', name: 'action', orderable: false, searchable: false, className: 'dt-body-center'},
             ],
         }).on('draw', function(){
             $('input[name="checkbox"]').each(function(){this.checked = false;});
@@ -144,7 +144,7 @@
             $('#modal-md').modal('show');
         });
 
-        $('body').on('click', '#editItem', function () {
+        $('body').on('click', '#editBooklocation', function () {
             var booklocation_id = $(this).data('id');
             $.get("{{ route('booklocations.index') }}" +'/' + booklocation_id +'/edit', function (data) {
                 $('#modal-md').modal('show');

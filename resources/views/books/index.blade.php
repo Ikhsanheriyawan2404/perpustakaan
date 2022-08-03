@@ -24,6 +24,7 @@
     <div class="row">
         <div class="col-12">
             @can('item-create')
+            <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#importExcel">Impor <i class="fa fa-file-import"></i></a>
             <button class="btn btn-sm btn-success">Impor <i class="fa fa-file-import"></i></button>
             <button class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></button>
             <button class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></button>
@@ -114,6 +115,62 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-- MODAL IMPORT EXCEL -->
+<div class="modal fade" id="importExcel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="{{ route('books.import') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title">Import Excel</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div>
+                <div class="modal-body">
+                    <div class="card card-primary">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Baris 1 = Nama Siswa</li>
+                                <li>Baris 2 = NISN Siswa</li>
+                                <li>Baris 3 = Jenis Kelamin (L/P)</li>
+                                <li>Baris 4 = Agama</li>
+                                <li>Baris 5 = Nama Kelas</li>
+                                <li>Baris 6 = Tanggal Lahir</li>
+                                <li>Baris 7 = No HP</li>
+                                <li>Baris 8 = Email</li>
+                                <li>Baris 9 = Alamat</li>
+                            </ul>
+                        </div>
+                    </div>
+                    @csrf
+                    <div class="form-group">
+                        <label for="customFile">Masukan file excel <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" name="file" class="custom-file-input @error('file') is-invalid @enderror" id="customFile" required>
+                            <label class="custom-file-label" for="customFile">Pilih file</label>
+                            @error('file')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal import excel -->
 
 @endsection
 

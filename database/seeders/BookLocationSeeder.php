@@ -21,5 +21,17 @@ class BookLocationSeeder extends Seeder
         Booklocation::create([
             'name' => 'Politik'
         ]);
+
+        Booklocation::create([
+            'name' => 'Self Improvement'
+        ]);
+
+        Booklocation::create([
+            'name' => 'Teknologi'
+        ]);
+
+        Booklocation::create([
+            'name' => 'Fiksi'
+        ]);
     }
 }

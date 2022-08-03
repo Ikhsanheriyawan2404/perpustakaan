@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BooksImport;
 use App\Http\Requests\BookRequest;
 use App\Models\{Book, Booklocation};
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -102,5 +104,17 @@ class BookController extends Controller
         $id = request('id');
         Book::whereIn('id', $id)->delete();
         return response()->json(['code'=> 1, 'msg' => 'Data book berhasil dihapus']);
+    }
+
+    public function import()
+    {
+        request()->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        Excel::import(new BooksImport, request()->file('file')->store('file'));
+
+        toast('Data buku berhasil diimport!', 'success');
+        return redirect()->route('books.index');
     }
 }

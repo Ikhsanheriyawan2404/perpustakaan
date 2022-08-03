@@ -18,15 +18,17 @@ class BooklocationController extends Controller
                     })
                     ->addColumn('action', function($row){
                         $btn =
-                        '<div class="d-flex justify-content-center">
-
-                            <a href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-primary btn-sm mr-2" id="editItem"><i class="fas fa-pencil-alt"></i></a>
-
-                            <form action=" ' . route('booklocations.destroy', $row->id) . '" method="POST">
-                               <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah yakin ingin menghapus ini?\')"><i class="fas fa-trash"></i></button>
-                            ' . csrf_field() . '
-                            ' . method_field('DELETE') . '
-                           </form>
+                        '<div class="btn-group">
+                            <a class="badge badge-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-primary btn-sm" id="editBooklocation">Edit</a>
+                                <form action=" ' . route('booklocations.destroy', $row->id) . '" method="POST">
+                                    <button type="submit" class="dropdown-item" onclick="return confirm(\'Apakah yakin ingin menghapus ini?\')">Hapus</button>
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                </form>
+                            </div>
                         </div>';
 
                         return $btn;
@@ -41,6 +43,7 @@ class BooklocationController extends Controller
 
     public function store()
     {
+        request()->validate(['name' => 'required']);
         Booklocation::updateOrCreate(['id' => request('booklocation_id')],
             ['name' => request('name')]);
     }

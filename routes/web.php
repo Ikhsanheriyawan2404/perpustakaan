@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     // Buku
     Route::resources(['books' => BookController::class]);
     Route::post('books/delete-selected', [BookController::class, 'deleteSelected'])->name('books.deleteSelected');
+    Route::post('books/import', [BookController::class, 'import'])->name('books.import');
     // Anggota
     Route::resources(['members' => MemberController::class]);
     Route::post('members/delete-selected', [MemberController::class, 'deleteSelected'])->name('members.deleteSelected');

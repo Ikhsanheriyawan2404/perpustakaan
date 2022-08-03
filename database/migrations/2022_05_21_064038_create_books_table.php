@@ -15,7 +15,12 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('isbn')->nullable();
             $table->string('title');
+            $table->string('author')->nullable();
+            $table->string('publisher')->nullable();
+            $table->string('publish_year')->nullable();
+            $table->string('price')->nullable();
             $table->string('image')->nullable()->default('default.jpg');
             $table->string('quantity')->nullable();
             $table->text('description')->nullable();
