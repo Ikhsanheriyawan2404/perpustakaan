@@ -19,10 +19,16 @@ Breadcrumbs::for('books', function (BreadcrumbTrail $trail) {
     $trail->push('Buku', route('books.index'));
 });
 
-// Home > Books
+// Home > Anggota
 Breadcrumbs::for('members', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Anggota', route('members.index'));
+});
+
+// Home > Peminjaman Buku
+Breadcrumbs::for('bookloans', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Peminjaman Buku', route('bookloans.index'));
 });
 
 // Home > Users

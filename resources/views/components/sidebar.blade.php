@@ -47,10 +47,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('members.index') }}" class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}">
+            <a href="{{ route('bookloans.index') }}" class="nav-link {{ request()->routeIs('bookloans.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-users"></i>
             <p>
-                Peminjaman
+                Peminjaman Buku
             </p>
             </a>
         </li>

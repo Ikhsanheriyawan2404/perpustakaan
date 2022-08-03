@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             BookLocationSeeder::class,
+            MemberSeeder::class,
+            BookSeeder::class,
         ]);
         // \App\Models\Book::factory(100)->create();
     }
