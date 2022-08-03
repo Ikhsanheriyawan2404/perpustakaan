@@ -122,6 +122,7 @@
 
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('asset') }}/plugins/select2/css/select2.min.css">
 @endsection
 @section('custom-scripts')
 
@@ -132,13 +133,14 @@
     <script src="{{ asset('asset')}}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
+    <script src="{{ asset('asset') }}/plugins/select2/js/select2.min.js"></script>
     <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
+        $('.select2').select2({ width: '100%'});
         $(function () {
 
             let table = $('#data-table').DataTable({

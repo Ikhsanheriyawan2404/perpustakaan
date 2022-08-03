@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class BookController extends Controller
 {
     // public function __construct()
@@ -39,7 +38,7 @@ class BookController extends Controller
                             <a class="badge badge-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showbook" class="btn btn-sm btn-primary">View</a>
+                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showBook" class="btn btn-sm btn-primary">View</a>
                                 <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-primary btn-sm" id="editBook">Edit</a>
                                 <form action=" ' . route('books.destroy', $row->id) . '" method="POST">
                                     <button type="submit" class="dropdown-item" onclick="return confirm(\'Apakah yakin ingin menghapus ini?\')">Hapus</button>
@@ -59,6 +58,11 @@ class BookController extends Controller
         ]);
     }
 
+    public function show(Book $book)
+    {
+        return response()->json($book);
+    }
+
     public function store(BookRequest $request)
     {
         $request->validated();
@@ -67,23 +71,30 @@ class BookController extends Controller
         if ($bookId) {
             $book = Book::find($bookId);
             if (request('image')) {
-                Storage::delete($book->image);
+                if ($book->image != 'img/books/default.jpg') {
+                    Storage::delete($book->image);
+                    $image = request()->file('image')->store('img/books');
+                }
                 $image = request()->file('image')->store('img/books');
             } else {
                 $image = $book->image;
             }
         } else {
-            $image = request('image') ? request()->file('image')->store('img/books') : null;
+            $image = request('image') ? request()->file('image')->store('img/books') : 'img/books/default.jpg';
         }
 
-        Book::updateOrCreate(
-            ['id' => request('book_id')],
-            [
+        $book = Book::updateOrCreate(
+            ['id' => request('book_id')],[
                 'title' => request('title'),
+                'isbn' => request('isbn'),
+                'author' => request('author'),
+                'publisher' => request('publisher'),
+                'publish_year' => request('publish_year'),
                 'quantity' => request('quantity'),
+                'price' => request('price'),
                 'description' => request('description'),
-                'image' => $image,
                 'booklocation_id' => request('booklocation_id'),
+                'image' => $image,
             ]);
     }
 

@@ -21,7 +21,7 @@ class CreateBooksTable extends Migration
             $table->string('publisher')->nullable();
             $table->string('publish_year')->nullable();
             $table->string('price')->nullable();
-            $table->string('image')->nullable()->default('default.jpg');
+            $table->string('image')->nullable()->default('img/books/default.jpg');
             $table->string('quantity')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('booklocation_id');

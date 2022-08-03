@@ -105,6 +105,7 @@
 <script src="{{ asset('asset')}}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
+
 <script>
     $.ajaxSetup({
         headers: {

@@ -24,11 +24,16 @@ class BookRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'image' => 'nullable',
-            'description' => 'nullable',
-            'quantity' => 'nullable',
-            'booklocation_id' => 'nullable',
+            'title' => 'required|max:255',
+            'image' => 'nullable|max:255',
+            'isbn' => 'nullable|max:255',
+            'publisher' => 'nullable|max:255',
+            'pusblish_year' => 'nullable|max:255',
+            'author' => 'nullable|max:255',
+            'price' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
+            'quantity' => 'nullable|max:255',
+            'booklocation_id' => 'nullable|max:255',
         ];
     }
 }
