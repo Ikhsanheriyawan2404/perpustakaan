@@ -125,7 +125,7 @@ class BookController extends Controller
             'file' => 'required|mimes:csv,xls,xlsx'
         ]);
 
-        Excel::import(new BooksImport, request()->file('file')->store('file'));
+        Excel::import(new BooksImport, request()->file('file'));
 
         toast('Data buku berhasil diimport!', 'success');
         return redirect()->route('books.index');

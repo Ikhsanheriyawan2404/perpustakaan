@@ -16,6 +16,12 @@ class Book extends Model
         return $this->belongsTo(Booklocation::class);
     }
 
+
+    public function bookloan()
+    {
+        return $this->hasMany(Bookloan::class);
+    }
+
     public function getTakeImageAttribute()
     {
         return '/storage/' . $this->image;

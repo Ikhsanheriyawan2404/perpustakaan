@@ -26,8 +26,8 @@ class BookloanRequest extends FormRequest
         return [
             'book_id' => 'required',
             'member_id' => 'required',
-            'borrow_date' => 'required',
-            'date_of_return' => 'required',
+            'borrow_date' => 'required|date',
+            'date_of_return' => 'required|date',
         ];
     }
 }

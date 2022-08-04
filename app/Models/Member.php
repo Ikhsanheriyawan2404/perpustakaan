@@ -9,7 +9,12 @@ class Member extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone_number', 'image', 'address'];
+    protected $fillable = ['name', 'gender', 'email', 'phone_number', 'image', 'address', 'status'];
+
+    public function bookloan()
+    {
+        return $this->hasMany(Bookloan::class);
+    }
 
     public function getTakeImageAttribute()
     {

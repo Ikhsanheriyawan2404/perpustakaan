@@ -24,9 +24,10 @@
     <div class="row">
         <div class="col-12">
             @can('item-create')
-            <button class="btn btn-sm btn-success">Impor <i class="fa fa-file-import"></i></button>
-            <button class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></button>
-            <button class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></button>
+            <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#importExcel">Impor <i
+                class="fa fa-file-import"></i></a>
+            <a href="{{ route('members.export') }}" class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></a>
+            <a href="{{ route('members.printpdf') }}" class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></a>
             <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
             <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
             @endcan
@@ -50,7 +51,7 @@
                         <th>Nama Anggota</th>
                         <th>Email</th>
                         <th>No HP</th>
-                        <th style="width: 40%">Alamat</th>
+                        <th>Status</th>
                         <th class="text-center" style="width: 5%"><i class="fas fa-cogs"></i> </th>
                     </tr>
                 </thead>
@@ -83,6 +84,14 @@
                         <input type="text" class="form-control form-control-sm mr-2" name="name" id="name" required>
                     </div>
                     <div class="form-group">
+                        <label for="gender">Jenis Kelamin <span class="text-danger">*</span></label>
+                        <select name="gender" id="gender" class="form-control form-control-sm mr-2">
+                            <option selected disabled>Pilih jenis kelamin</option>
+                            <option value="L">Laki-Laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control form-control-sm mr-2" name="email" id="email" required>
                     </div>
@@ -110,6 +119,60 @@
 </div>
 <!-- /.modal -->
 
+<!-- MODAL IMPORT EXCEL -->
+<div class="modal fade" id="importExcel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="{{ route('members.import') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title">Import Excel</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                    <div class="modal-body">
+                        <div class="card card-primary">
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Kolom 1 = Nama Anggota <span class="text-danger">*</span></li>
+                                    <li>Kolom 2 = Jenis Kelamin <span class="text-danger">*</span> (contoh: L / P)</li>
+                                    <li>Kolom 3 = Email</li>
+                                    <li>Kolom 4 = Nomor HP</li>
+                                    <li>Kolom 5 = Alamat</li>
+                                </ul>
+                            </div>
+                        </div>
+                        @csrf
+                        <div class="form-group">
+                            <label for="customFile">Masukan file excel <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                                <input type="file" name="file"
+                                    class="custom-file-input @error('file') is-invalid @enderror" id="customFile"
+                                    required>
+                                <label class="custom-file-label" for="customFile">Pilih file</label>
+                                @error('file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-right">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal import excel -->
+
 @endsection
 
 @section('custom-styles')
@@ -120,6 +183,7 @@
 
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('asset') }}/plugins/toastr/toastr.min.css">
+    <script src="{{ asset('asset') }}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 @endsection
 @section('custom-scripts')
 
@@ -138,7 +202,7 @@
         });
 
         $(function () {
-
+            bsCustomFileInput.init();
             let table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -151,7 +215,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
                     {data: 'phone_number', name: 'phone_number'},
-                    {data: 'address', name: 'address'},
+                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false, className: 'dt-body-center'},
                 ],
             }).on('draw', function(){
@@ -184,6 +248,7 @@
                     $('#saveBtn').html("Simpan");
                     $('#member_id').val(data.id);
                     $('#name').val(data.name);
+                    $('#gender').val(data.gender);
                     $('#email').val(data.email);
                     $('#phone_number').val(data.phone_number);
                     $('#address').val(data.address);
@@ -255,7 +320,7 @@
                if(checkedItem.length > 0){
                     swal.fire({
                         title:'Apakah yakin?',
-                        html:'Ingin menghapus <b>('+checkedItem.length+')</b> barang',
+                        html:'Ingin menghapus <b>('+checkedItem.length+')</b> anggota?',
                         showCancelButton:true,
                         showCloseButton:true,
                         confirmButtonText:'Ya Hapus',

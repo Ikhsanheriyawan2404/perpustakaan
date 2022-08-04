@@ -28,6 +28,7 @@ class MemberRequest extends FormRequest
             'email' => 'max:255',
             'phone_number' => 'max:255',
             'address' => 'nullable',
+            'gender' => 'required',
             'image' => 'image|mimes:jpg,jpeg,png|max:2048|max:255',
         ];
     }

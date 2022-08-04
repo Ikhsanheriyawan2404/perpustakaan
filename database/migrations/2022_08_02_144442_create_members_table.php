@@ -16,10 +16,12 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->enum('gender', ['L', 'P']);
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
             $table->text('address')->nullable();
             $table->string('image')->nullable();
+            $table->enum('status', ['1', '2'])->nullable()->default(1);
             $table->timestamps();
         });
     }

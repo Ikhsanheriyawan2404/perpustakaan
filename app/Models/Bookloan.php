@@ -9,7 +9,7 @@ class Bookloan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['borrow_date', 'date_of_return', 'member_id', 'book_id'];
+    protected $fillable = ['admin', 'status', 'credit_code', 'borrow_date', 'date_of_return', 'member_id', 'book_id'];
 
     public function book()
     {
