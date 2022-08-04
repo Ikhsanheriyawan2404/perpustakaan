@@ -5,12 +5,13 @@ use App\Http\Controllers\{RoleController, UserController, BookController, Member
 use App\Http\Controllers\Auth\LoginController;
 
 // Login Routes ...
-Route::get('', [LoginController::class, 'showLoginForm']);
+Route::get('/', [App\Http\Controllers\HomeController::class, 'listbook'])->name('home');
+Route::get('login', [LoginController::class, 'showLoginForm']);
 Route::post('login', [LoginController::class,'login'])->name('login');
 Route::post('logout',  [LoginController::class,'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     // Pengguna
     Route::resources(['users' => UserController::class]);

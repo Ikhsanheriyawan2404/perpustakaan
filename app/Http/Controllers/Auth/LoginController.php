@@ -46,7 +46,7 @@ class LoginController extends Controller
         //     return redirect()->route('users.index');
         // }
         Alert::success('Selamat', 'Kamu berhasil login');
-        return redirect()->route('home');
+        return redirect()->route('dashboard');
     }
 
     public function showLoginForm()

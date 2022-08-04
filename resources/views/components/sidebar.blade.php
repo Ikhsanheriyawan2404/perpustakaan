@@ -26,6 +26,14 @@
             <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
             <i class="nav-icon fa fa-book "></i>
             <p>
+                Daftar Buku Perpustakaan
+            </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-book "></i>
+            <p>
                 Buku
             </p>
             </a>
