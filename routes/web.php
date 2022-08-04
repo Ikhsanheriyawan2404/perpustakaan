@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{RoleController, UserController, BookController, MemberController, BooklocationController, BookloanController, ProfilController};
+use App\Http\Controllers\{RoleController, UserController, BookController, MemberController, BooklocationController, BookloanController, FineController, ProfilController};
 use App\Http\Controllers\Auth\LoginController;
 
 // Login Routes ...
@@ -11,7 +11,7 @@ Route::post('login', [LoginController::class,'login'])->name('login');
 Route::post('logout',  [LoginController::class,'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     // Pengguna
     Route::resources(['users' => UserController::class]);
@@ -48,6 +48,10 @@ Route::middleware('auth')->group(function () {
     Route::get('profils', [ProfilController::class, 'index'])->name('profils.index');
     Route::post('profils', [ProfilController::class, 'store'])->name('profils.store');
     Route::get('profils/{profil}/edit', [ProfilController::class, 'edit'])->name('profils.edit');
+
+    // Denda
+    Route::get('fine', [FineController::class, 'index'])->name('fine.index');
+    Route::post('fine', [FineController::class, 'update'])->name('fine.update');
 
     Route::prefix('trash')->group(function () {
         Route::get('books', [BookController::class, 'trash'])->name('books.trash');

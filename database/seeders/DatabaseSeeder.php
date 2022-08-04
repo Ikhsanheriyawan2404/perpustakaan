@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             BookSeeder::class,
             ProfilSeeder::class,
+            FineSeeder::class,
         ]);
         // \App\Models\Book::factory(100)->create();
     }
