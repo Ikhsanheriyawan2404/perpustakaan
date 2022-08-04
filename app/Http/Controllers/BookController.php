@@ -143,4 +143,39 @@ class BookController extends Controller
         $pdf = PDF::loadView('books.pdf', compact('books'))->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
+
+    public function trash()
+    {
+        $books = Book::onlyTrashed()->with('booklocation')->get();
+        return view('books.trash', [
+            'title' => 'Data Sampah Buku',
+            'books' => $books,
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $book = Book::onlyTrashed()->where('id', $id);
+        $book->restore();
+        toast('Data buku berhasil dipulihkan!', 'success');
+        return redirect()->back();
+    }
+
+    public function deletePermanent($id)
+    {
+        $book = Book::onlyTrashed()->where('id', $id);
+        $book->forceDelete();
+
+        toast('Data buku berhasil dihapus permanen!', 'success');
+        return redirect()->back();
+    }
+
+    public function deleteAll()
+    {
+        $books = Book::onlyTrashed();
+        $books->forceDelete();
+
+        toast('Semua data buku berhasil dihapus permanen!', 'success');
+        return redirect()->back();
+    }
 }

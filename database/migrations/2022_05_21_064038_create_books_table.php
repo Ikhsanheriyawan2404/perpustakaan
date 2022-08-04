@@ -26,6 +26,7 @@ class CreateBooksTable extends Migration
             $table->text('description')->nullable();
             $table->unsignedBigInteger('booklocation_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('booklocation_id')->references('id')->on('booklocations')->onDelete('RESTRICT');
         });

@@ -119,6 +119,38 @@
 </div>
 <!-- /.modal -->
 
+<!-- MODAL SHOW BOOK -->
+<div class="modal fade show" id="modalMember" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detail Buku</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><img src="" id="imageMember" alt="default.jpg" class="img-fluid" width="50%"></li>
+                    <li class="list-group-item">Nama : <i id="nameMember"></i></li>
+                    <li class="list-group-item">Jenis Kelamin : <i id="genderMember"></i></li>
+                    <li class="list-group-item">Email : <i id="emailMember"></i></li>
+                    <li class="list-group-item">No HP : <i id="phoneNumberMember"></i></li>
+                    <li class="list-group-item">Alamat : <i id="addressMember"></i></li>
+                    <li class="list-group-item">Status : <i id="statusMember"></i></li>
+                    <li class="list-group-item">Jumlah Pinjaman : <i id="totalLoan"></i></li>
+                    <li class="list-group-item">Jumlah Denda : <i id=""></i></li>
+                </ul>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <!-- MODAL IMPORT EXCEL -->
 <div class="modal fade" id="importExcel">
     <div class="modal-dialog modal-md">
@@ -234,6 +266,22 @@
                 $('#itemForm').trigger("reset");
                 $('#modal-title').html("Tambah Buku");
                 $('#modal-md').modal('show');
+            });
+
+            $('body').on('click', '#showMember', function() {
+                var member_id = $(this).data('id');
+                $.get("{{ route('members.index') }}" + '/' + member_id, function(data) {
+                    $('#modalMember').modal('show');
+                    $('#member_id').val(data.id);
+                    $('#imageMember').attr('src', '/storage/' + data.image);
+                    $('#nameMember').html(data.name);
+                    $('#genderMember').html(data.gender);
+                    $('#emailMember').html(data.email);
+                    $('#phoneNumberMember').html(data.phone_number);
+                    $('#addressMember').html(data.address);
+                    $('#statusMember').html(data.status);
+                    $('#totalLoan').html(data.bookloan.name);
+                })
             });
 
             $('body').on('click', '#editMember', function () {

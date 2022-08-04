@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Book, Member, Bookloan};
+use PDF;
 use App\Http\Requests\BookloanRequest;
+use App\Models\{Book, Member, Bookloan};
 use Yajra\DataTables\Facades\DataTables;
 
 class BookloanController extends Controller
@@ -39,8 +40,15 @@ class BookloanController extends Controller
                             <a class="badge badge-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showMember" class="btn btn-sm btn-primary">Print</a>
-                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showMember" class="btn btn-sm btn-primary">View</a>
+                                <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showBookLoan" class="btn btn-sm btn-primary">View</a>
+                                <form action="' . route('bookloans.printPdf', $row->id) . '" method="post">
+                                    ' . csrf_field() . '
+                                    <button type="submit" class="dropdown-item" class="btn btn-sm btn-primary">Print</button>
+                                </form>
+                                <form action="' . route('bookloans.processLoan', $row->id) . '" method="post">
+                                    ' . csrf_field() . '
+                                    <button type="submit" class="dropdown-item" class="btn btn-sm btn-primary">Proses Pengembalian</button>
+                                </form>
                             </div>
                         </div>';
                         return $btn;
@@ -54,6 +62,12 @@ class BookloanController extends Controller
             'books' => Book::all(),
             'members' => Member::all(),
         ]);
+    }
+
+    public function show($id)
+    {
+        $bookloan = Bookloan::with(['member', 'book'])->findOrFail($id);
+        return response()->json($bookloan);
     }
 
     public function store(BookloanRequest $request)
@@ -81,5 +95,23 @@ class BookloanController extends Controller
         $id = request('id');
         Bookloan::whereIn('id', $id)->delete();
         return response()->json(['code'=> 1, 'msg' => 'Data pinjaman buku berhasil dihapus']);
+    }
+
+    public function processLoan(Bookloan $bookloan)
+    {
+        $bookloan->update([
+            'status' => 2,
+        ]);
+
+        toast('Pengembalian buku pinjaman berhasil diproses!', 'success');
+        return redirect()->back();
+    }
+
+    public function printPdf(Bookloan $bookloan)
+    {
+        // $pdf = app('dompdf.wrapper');
+        $customPaper = array(0,0,360,360);
+        $pdf = PDF::loadView('bookloans.pdf', compact('bookloan'))->setPaper('letter', 'potrait');
+        return $pdf->stream();
     }
 }

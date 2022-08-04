@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{RoleController, UserController, BookController, MemberController, BooklocationController, BookloanController};
+use App\Http\Controllers\{RoleController, UserController, BookController, MemberController, BooklocationController, BookloanController, ProfilController};
 use App\Http\Controllers\Auth\LoginController;
 
 // Login Routes ...
@@ -38,7 +38,26 @@ Route::middleware('auth')->group(function () {
     // Peminjaman Buku
     Route::resources(['bookloans' => BookloanController::class]);
     Route::post('bookloans/delete-selected', [BookloanController::class, 'deleteSelected'])->name('bookloans.deleteSelected');
+    Route::post('bookloans/{bookloan}/proccess-loan', [BookloanController::class, 'processLoan'])->name('bookloans.processLoan');
+    Route::post('bookloans/{bookloan}/print-pdf', [BookloanController::class, 'printPdf'])->name('bookloans.printPdf');
 
     // Roles
     Route::resources(['roles' => RoleController::class]);
+
+    // Profil
+    Route::get('profils', [ProfilController::class, 'index'])->name('profils.index');
+    Route::post('profils', [ProfilController::class, 'store'])->name('profils.store');
+    Route::get('profils/{profil}/edit', [ProfilController::class, 'edit'])->name('profils.edit');
+
+    Route::prefix('trash')->group(function () {
+        Route::get('books', [BookController::class, 'trash'])->name('books.trash');
+        Route::get('books/restore/{id}', [BookController::class, 'restore'])->name('books.restore');
+        Route::delete('books/delete/{id}', [BookController::class, 'deletePermanent'])->name('books.deletePermanent');
+        Route::delete('books/deleteAll/', [BookController::class, 'deleteAll'])->name('books.deleteAll');
+
+        Route::get('bookloans', [BookloanController::class, 'trash'])->name('bookloans.trash');
+        Route::get('bookloans/restore/{id}', [BookloanController::class, 'restore'])->name('bookloans.restore');
+        Route::delete('bookloans/delete/{id}', [BookloanController::class, 'deletePermanent'])->name('bookloans.deletePermanent');
+        Route::delete('bookloans/deleteAll/', [BookloanController::class, 'deleteAll'])->name('bookloans.deleteAll');
+    });
 });

@@ -115,6 +115,37 @@
 </div>
 <!-- /.modal -->
 
+<!-- MODAL SHOW PINJAMAN -->
+<div class="modal fade show" id="modalBookLoan" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detail Pinjaman Buku</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><img src="" id="imageLoan" alt="default.jpg" class="img-fluid" width="50%"></li>
+                    <li class="list-group-item">Kode Pinjaman : <i id="creditCodeLoan"></i></li>
+                    <li class="list-group-item">Nama Peminjam : <i id="nameLoan"></i></li>
+                    <li class="list-group-item">Buku : <i id="bookLoan"></i></li>
+                    <li class="list-group-item">Tanggal Pinjam : <i id="borrowDateLoan"></i></li>
+                    <li class="list-group-item">Tanggal Pengembalian : <i id="dateOfReturnLoan"></i></li>
+                    <li class="list-group-item">Status : <i id="statusLoan"></i></li>
+                    <li class="list-group-item">Denda : <i id="fineLoan"></i></li>
+                </ul>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 @endsection
 
 @section('custom-styles')
@@ -181,6 +212,22 @@
                 $('#itemForm').trigger("reset");
                 $('#modal-title').html("Tambah Buku");
                 $('#modal-md').modal('show');
+            });
+
+            $('body').on('click', '#showBookLoan', function() {
+                var bookloan_id = $(this).data('id');
+                $.get("{{ route('bookloans.index') }}" + '/' + bookloan_id, function(data) {
+                    $('#modalBookLoan').modal('show');
+                    $('#bookloan_id').val(data.id);
+                    $('#imageLoan').attr('src', '/storage/' + data.image);
+                    $('#creditCodeLoan').html(data.credit_code);
+                    $('#nameLoan').html(data.member.name);
+                    $('#bookLoan').html(data.book.title);
+                    $('#borrowDateLoan').html(data.borrow_date);
+                    $('#dateOfReturnLoan').html(data.date_of_return);
+                    $('#statusLoan').html((data.status == 2) ? 'Dikembalikan' : 'Masih Di Peminjam');
+                    // $('#fineLoan').html((new Date() > data.date_of_return) : 'telat' : 'nggktelat');
+                })
             });
 
             $('#saveBtn').click(function (e) {

@@ -22,10 +22,11 @@ class CreateBookloansTable extends Migration
             $table->date('date_of_return');
             $table->enum('status', ['1', '2'])->default(1);
             $table->string('admin');
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('member_id')->on('members')->references('id')->onDelete('RESTRICT');
             $table->foreign('book_id')->on('books')->references('id')->onDelete('RESTRICT');
-            $table->timestamps();
         });
     }
 

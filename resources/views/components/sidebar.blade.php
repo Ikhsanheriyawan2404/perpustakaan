@@ -23,7 +23,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+            <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home.*') ? 'active' : '' }}">
             <i class="nav-icon fa fa-book "></i>
             <p>
                 Daftar Buku Perpustakaan
@@ -62,16 +62,42 @@
             </p>
             </a>
         </li>
-        <li class="nav-header">Laporan</li>
+        <li class="nav-header">Management</li>
         <li class="nav-item">
-            <a href="{{ route('members.index') }}" class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-users"></i>
+            <a href="{{ route('profils.index') }}" class="nav-link {{ request()->routeIs('profils.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cogs"></i>
             <p>
-                Laporan
+                Profil
             </p>
             </a>
         </li>
-        <li class="nav-header">Management</li>
+        <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                Sampah
+                <i class="right fas fa-trash-alt"></i>
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Data Buku
+                    </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-tag"></i>
+                    <p>
+                        Data Pinjaman Buku
+                    </p>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="nav-item">
             @can('user-list')
             <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('roles.*') ? 'active' : '' }}">

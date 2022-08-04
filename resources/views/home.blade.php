@@ -103,7 +103,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                         <p class="card-text"><i>{{ $book->author }} ({{ $book->publish_year }}); Lokasi
                                                 : {{ $book->booklocation->name }}</i></p>
-                                        <a href="#" class="btn btn-sm btn-primary">Tersedia</a>
+                                        <a href="#" class="btn btn-sm btn-primary">{{ $book->quantity == 0 ? 'Tersedia' : 'Dipinjam'}}</a>
                                     </div>
                                 </div>
                             </div>

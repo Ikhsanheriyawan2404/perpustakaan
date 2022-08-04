@@ -25,6 +25,12 @@ Breadcrumbs::for('members', function (BreadcrumbTrail $trail) {
     $trail->push('Anggota', route('members.index'));
 });
 
+// Home > Profils
+Breadcrumbs::for('profils', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Profil', route('profils.index'));
+});
+
 // Home > Peminjaman Buku
 Breadcrumbs::for('bookloans', function (BreadcrumbTrail $trail) {
     $trail->parent('home');

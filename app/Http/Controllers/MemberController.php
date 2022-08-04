@@ -50,6 +50,11 @@ class MemberController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $member = Member::with('bookloan')->findOrFail($id);
+        return response()->json($member);
+    }
     public function store(MemberRequest $request)
     {
         $request->validated();
