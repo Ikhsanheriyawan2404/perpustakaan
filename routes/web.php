@@ -15,9 +15,12 @@ Route::middleware('auth')->group(function () {
     Route::resources(['users' => UserController::class]);
     Route::post('users/{user:id}/status', [UserController::class, 'changeStatus'])->name('users.status');
     // Buku
+    Route::post('books/import', [BookController::class, 'import'])->name('books.import');
+    Route::get('books/export', [BookController::class, 'export'])->name('books.export');
+    Route::get('books/printpdf', [BookController::class, 'printPDF'])->name('books.printpdf');
     Route::resources(['books' => BookController::class]);
     Route::post('books/delete-selected', [BookController::class, 'deleteSelected'])->name('books.deleteSelected');
-    Route::post('books/import', [BookController::class, 'import'])->name('books.import');
+
     // Anggota
     Route::resources(['members' => MemberController::class]);
     Route::post('members/delete-selected', [MemberController::class, 'deleteSelected'])->name('members.deleteSelected');

@@ -26,8 +26,8 @@
                 @can('item-create')
                     <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#importExcel">Impor <i
                             class="fa fa-file-import"></i></a>
-                    <button class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></button>
-                    <button class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></button>
+                    <a href="{{ route('books.export') }}" class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></a>
+                    <a href="{{ route('books.printpdf') }}" class="btn btn-sm btn-danger">Print PDF <i class="fa fa-file-pdf"></i></a>
                     <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
                     <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
                 @endcan
@@ -89,7 +89,7 @@
                             <label for="booklocation_id">Lokasi / Kategori Buku <span class="text-danger">*</span></label>
                             <select name="booklocation_id" id="booklocation_id" class="form-control form-control-sm select2"
                                 required>
-                                <option selected disabled>Pilih kategori barang</option>
+                                <option selected disabled>Pilih lokasi buku</option>
                                 @foreach ($booklocation as $data)
                                     <option value="{{ $data->id }}">{{ $data->name }}</option>
                                 @endforeach
@@ -195,15 +195,15 @@
                                 <div class="card-header"></div>
                                 <div class="card-body">
                                     <ul>
-                                        <li>Baris 1 = Nama Siswa</li>
-                                        <li>Baris 2 = NISN Siswa</li>
-                                        <li>Baris 3 = Jenis Kelamin (L/P)</li>
-                                        <li>Baris 4 = Agama</li>
-                                        <li>Baris 5 = Nama Kelas</li>
-                                        <li>Baris 6 = Tanggal Lahir</li>
-                                        <li>Baris 7 = No HP</li>
-                                        <li>Baris 8 = Email</li>
-                                        <li>Baris 9 = Alamat</li>
+                                        <li>Kolom 1 = Judul Buku <span class="text-danger">*</span></li>
+                                        <li>Kolom 2 = Penulis Buku</li>
+                                        <li>Kolom 3 = Penerbit</li>
+                                        <li>Kolom 4 = Tahun Terbit</li>
+                                        <li>Kolom 5 = ISBN</li>
+                                        <li>Kolom 6 = Kuantitas</li>
+                                        <li>Kolom 7 = Harga</li>
+                                        <li>Kolom 8 = Deskripsi</li>
+                                        <li>Kolom 9 = Lokasi Buku <span class="text-danger">*</span> (Berdasarkan id data lokasi buku)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -253,6 +253,7 @@
     <script src="{{ asset('asset') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="{{ asset('asset') }}/plugins/toastr/toastr.min.js"></script>
+    <script src="{{ asset('asset') }}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -261,6 +262,7 @@
         });
 
         $(function() {
+            bsCustomFileInput.init();
 
             let table = $('#data-table').DataTable({
                 processing: true,
@@ -434,7 +436,7 @@
                 if (checkedItem.length > 0) {
                     swal.fire({
                         title: 'Apakah yakin?',
-                        html: 'Ingin menghapus <b>(' + checkedItem.length + ')</b> barang',
+                        html: 'Ingin menghapus <b>(' + checkedItem.length + ')</b> buku',
                         showCancelButton: true,
                         showCloseButton: true,
                         confirmButtonText: 'Ya Hapus',

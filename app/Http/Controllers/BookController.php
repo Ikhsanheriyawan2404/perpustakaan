@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use App\Exports\BooksExport;
 use App\Imports\BooksImport;
 use App\Http\Requests\BookRequest;
 use App\Models\{Book, Booklocation};
@@ -22,7 +24,7 @@ class BookController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $books = Book::latest()->get();
+            $books = Book::with('booklocation')->latest()->get();
             return DataTables::of($books)
                     ->addIndexColumn()
                     ->editColumn('booklocation', function (Book $book) {
@@ -106,7 +108,7 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
-        toast('Data barang berhasil dihapus!','success');
+        toast('Data buku berhasil dihapus!','success');
         return back();
     }
 
@@ -114,7 +116,7 @@ class BookController extends Controller
     {
         $id = request('id');
         Book::whereIn('id', $id)->delete();
-        return response()->json(['code'=> 1, 'msg' => 'Data book berhasil dihapus']);
+        return response()->json(['code'=> 1, 'msg' => 'Data buku berhasil dihapus']);
     }
 
     public function import()
@@ -127,5 +129,18 @@ class BookController extends Controller
 
         toast('Data buku berhasil diimport!', 'success');
         return redirect()->route('books.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new BooksExport, time() . 'books.xlsx');
+    }
+
+    public function printPDF()
+    {
+        $books = Book::all();
+        // $pdf = app('dompdf.wrapper');
+        $pdf = PDF::loadView('books.pdf', compact('books'))->setPaper('a4', 'landscape');
+        return $pdf->stream();
     }
 }
