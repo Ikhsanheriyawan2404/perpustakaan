@@ -6,12 +6,19 @@ use PDF;
 use DateTime;
 use App\Models\Fine;
 use App\Models\Profil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\BookloanRequest;
 use App\Models\{Book, Member, Bookloan};
 use Yajra\DataTables\Facades\DataTables;
 
 class BookloanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:bookloan-module', ['only' => ['index', 'show', 'store', 'edit', 'update', 'destroy', 'printPDF', 'export', 'import', 'deleteSelected']]);
+        $this->middleware('permission:bookloan-trash', ['only' => ['deleteAll', 'deletePermanent', 'restore', 'trash']]);
+    }
+
     public function index()
     {
         if (request()->ajax()) {
@@ -93,15 +100,26 @@ class BookloanController extends Controller
         $lastCodeId = preg_replace("/[^0-9]/", "", $lastCreditCode);
         $lastIncrement = substr($lastCodeId, -3);
         $codeCredit = str_replace(' ', '',strtoupper($member->name)) . str_pad($lastIncrement + 1, 3, 0, STR_PAD_LEFT);
-        Bookloan::create(
-            [
-                'credit_code' => $codeCredit,
-                'book_id' => request('book_id'),
-                'member_id' => request('member_id'),
-                'borrow_date' => request('borrow_date'),
-                'date_of_return' => request('date_of_return'),
-                'admin' => auth()->user()->name,
-            ]);
+
+        DB::beginTransaction();
+
+        try {
+            Bookloan::create(
+                [
+                    'credit_code' => $codeCredit,
+                    'book_id' => request('book_id'),
+                    'member_id' => request('member_id'),
+                    'borrow_date' => request('borrow_date'),
+                    'date_of_return' => request('date_of_return'),
+                    'admin' => auth()->user()->name,
+                ]);
+            $book = Book::find(request('book_id'));
+            $book->decrement('quantity');
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollback();
+            toast($e->getMessage(), 'danger');
+        }
     }
 
     public function deleteSelected()
@@ -113,9 +131,17 @@ class BookloanController extends Controller
 
     public function processLoan(Bookloan $bookloan)
     {
-        $bookloan->update([
-            'status' => 2,
-        ]);
+        try {
+            $bookloan->update([
+                'status' => 2,
+            ]);
+            $book = Book::find($bookloan->book_id);
+            $book->increment('quantity');
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollback();
+            toast($e->getMessage(), 'danger');
+        }
 
         toast('Pengembalian buku pinjaman berhasil diproses!', 'success');
         return redirect()->back();

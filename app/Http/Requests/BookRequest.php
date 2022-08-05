@@ -32,7 +32,7 @@ class BookRequest extends FormRequest
             'author' => 'nullable|max:255',
             'price' => 'nullable|max:255',
             'description' => 'nullable|max:255',
-            'quantity' => 'nullable|max:255',
+            'quantity' => 'required|max:255',
             'booklocation_id' => 'nullable|max:255',
         ];
     }

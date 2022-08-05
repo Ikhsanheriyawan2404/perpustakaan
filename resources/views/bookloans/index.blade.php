@@ -23,7 +23,7 @@
 <div class="container-fluid mb-3 d-flex justify-content-end">
     <div class="row">
         <div class="col-12">
-            @can('item-create')
+            @can('bookloan-module')
             <button class="btn btn-sm btn-primary" id="createNewItem">Tambah <i class="fa fa-plus"></i></button>
             <button class="btn btn-sm btn-danger d-none" id="deleteAllBtn">Hapus Semua</button>
             @endcan

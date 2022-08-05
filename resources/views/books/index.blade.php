@@ -23,7 +23,7 @@
     <div class="container-fluid mb-3 d-flex justify-content-end">
         <div class="row">
             <div class="col-12">
-                @can('item-create')
+                @can('book-module')
                     <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#importExcel">Impor <i
                             class="fa fa-file-import"></i></a>
                     <a href="{{ route('books.export') }}" class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></a>
@@ -121,7 +121,7 @@
                                 required>
                         </div>
                         <div class="form-group">
-                            <label for="quantity">Kuantitas</label>
+                            <label for="quantity">Kuantitas <span class="text-danger">*</span></label>
                             <input type="number" class="form-control form-control-sm mr-2" name="quantity" id="quantity"
                                 required>
                         </div>

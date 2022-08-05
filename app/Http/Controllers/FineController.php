@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class FineController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:fine-module', ['only' => ['index', 'update']]);
+    }
+
     public function index()
     {
         return view('fine.index', [

@@ -13,13 +13,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BookController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:book-list|book-create|book-edit|book-delete', ['only' => ['index','show']]);
-    //     $this->middleware('permission:book-create', ['only' => ['create','store']]);
-    //     $this->middleware('permission:book-edit', ['only' => ['edit','update']]);
-    //     $this->middleware('permission:book-delete', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:book-module', ['only' => ['index','show', 'store', 'edit', 'update', 'destroy', 'printPDF', 'export', 'import', 'deleteSelected']]);
+        $this->middleware('permission:book-trash', ['only' => ['deleteAll', 'deletePermanent', 'restore', 'trash']]);
+    }
 
     public function index()
     {

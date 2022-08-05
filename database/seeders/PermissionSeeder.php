@@ -23,10 +23,14 @@ class PermissionSeeder extends Seeder
             'role-create',
             'role-edit',
             'role-delete',
-            'item-list',
-            'item-create',
-            'item-edit',
-            'item-delete',
+            'book-module',
+            'book-trash',
+            'bookloan-module',
+            'bookloan-trash',
+            'booklocation-module',
+            'member-module',
+            'profil-module',
+            'fine-module',
          ];
 
          foreach ($permissions as $permission) {

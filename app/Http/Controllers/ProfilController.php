@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfilController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:profil-module', ['only' => ['index', 'edit', 'store']]);
+    }
+
     public function index()
     {
         return view('profils.index',[

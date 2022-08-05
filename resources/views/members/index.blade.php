@@ -23,7 +23,7 @@
 <div class="container-fluid mb-3 d-flex justify-content-end">
     <div class="row">
         <div class="col-12">
-            @can('item-create')
+            @can('book-module')
             <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#importExcel">Impor <i
                 class="fa fa-file-import"></i></a>
             <a href="{{ route('members.export') }}" class="btn btn-sm btn-success">Ekspor <i class="fa fa-file-export"></i></a>

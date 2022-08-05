@@ -11,7 +11,7 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
         <li class="nav-item menu-open">
@@ -54,7 +54,10 @@
             </p>
             </a>
         </li>
+        @can('user-list')
         <li class="nav-header">Management</li>
+        @endcan
+        @can('profil-module')
         <li class="nav-item">
             <a href="{{ route('profils.index') }}" class="nav-link {{ request()->routeIs('profils.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-cogs"></i>
@@ -63,6 +66,8 @@
             </p>
             </a>
         </li>
+        @endcan
+        @can('fine-module')
         <li class="nav-item">
             <a href="{{ route('fine.index') }}" class="nav-link {{ request()->routeIs('fine.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-money-bill"></i>
@@ -71,6 +76,8 @@
             </p>
             </a>
         </li>
+        @endcan
+        @can('book-trash')
         <li class="nav-item">
             <a href="{{ route('books.trash') }}" class="nav-link {{ request()->routeIs('books.trash') || request()->routeIs('bookloans.trash') ? 'active' : '' }}">
             <i class="nav-icon fas fa-trash-alt"></i>
@@ -98,6 +105,7 @@
                 </li>
             </ul>
         </li>
+        @endcan
         <li class="nav-item">
             @can('user-list')
             <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
