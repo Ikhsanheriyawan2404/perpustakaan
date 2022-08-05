@@ -59,14 +59,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                <h3>44</h3>
+                <h3>{{ $bookloans->where('status', '1')->count() }}</h3>
 
                 <p>Buku Di Pinjam</p>
                 </div>
                 <div class="icon">
                 <i class="ion ion-person-add"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('bookloans.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
             </div>
             <!-- ./col -->
@@ -74,14 +74,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                <h3>65</h3>
+                <h3>{{ $bookloans->where('date_of_return', '<', date('Y-m-d'))->where('status', '1')->count() }}</h3>
 
                 <p>Buku Telat Kembali</p>
                 </div>
                 <div class="icon">
                 <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('bookloans.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
             </div>
             <!-- ./col -->

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Book, Booklocation, Member};
+use App\Models\Profil;
+use App\Models\{Bookloan, Book, Booklocation, Member};
 
 class HomeController extends Controller
 {
@@ -17,6 +18,7 @@ class HomeController extends Controller
             'title' => 'Dashboard',
             'books' => Book::all(),
             'members' => Member::all(),
+            'bookloans' => Bookloan::all(),
         ]);
     }
 
@@ -27,6 +29,7 @@ class HomeController extends Controller
             'title' => 'Daftar Buku',
             'books' => Book::with(['booklocation', 'bookloan'])->where("title", "like", "%$search_query%")->orWhere("booklocation_id", "like", "%$search_query%")->latest()->paginate(24),
             'booklocations' => Booklocation::get(),
+            'profil' => Profil::first(),
         ]);
     }
 }

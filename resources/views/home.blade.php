@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Perpustakaan Daftar Buku</title>
+    <title>Daftar Buku {{ $profil->name }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -25,10 +25,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
             <div class="container">
-                <a href="{{ asset('asset') }}/index3.html" class="navbar-brand">
-                    <img src="{{ asset('asset') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+                <a href="{{ route('home') }}" class="navbar-brand">
+                    <img src="{{ $profil->takeImage }}" alt="Logo"
                         class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">Perpustakaan </span>
+                    <span class="brand-text font-weight-light">{{ $profil->name }} </span>
                 </a>
 
                 <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
@@ -63,7 +63,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0"> Perpustakaan <small>Example 3.0</small></h1>
+                            <h1 class="m-0"> Selamat Datang di <small>{{ $profil->name }}</small></h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <div class="btn-group float-sm-right">

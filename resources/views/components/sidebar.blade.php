@@ -23,7 +23,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.index') ? 'active' : '' }}">
             <i class="nav-icon fa fa-book "></i>
             <p>
                 Buku
@@ -47,8 +47,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('bookloans.index') }}" class="nav-link {{ request()->routeIs('bookloans.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-users"></i>
+            <a href="{{ route('bookloans.index') }}" class="nav-link {{ request()->routeIs('bookloans.index') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-book-bookmark"></i>
             <p>
                 Peminjaman Buku
             </p>
@@ -65,23 +65,23 @@
         </li>
         <li class="nav-item">
             <a href="{{ route('fine.index') }}" class="nav-link {{ request()->routeIs('fine.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-cogs"></i>
+            <i class="nav-icon fas fa-money-bill"></i>
             <p>
                 Denda
             </p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-user"></i>
+            <a href="{{ route('books.trash') }}" class="nav-link {{ request()->routeIs('books.trash') || request()->routeIs('bookloans.trash') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-trash-alt"></i>
             <p>
                 Sampah
-                <i class="right fas fa-trash-alt"></i>
+                <i class="right fas fa-angle-left"></i>
             </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                    <a href="{{ route('books.trash') }}" class="nav-link {{ request()->routeIs('books.trash') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-book"></i>
                     <p>
                         Data Buku
@@ -89,8 +89,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-user-tag"></i>
+                    <a href="{{ route('bookloans.trash') }}" class="nav-link {{ request()->routeIs('bookloans.trash') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-book-bookmark"></i>
                     <p>
                         Data Pinjaman Buku
                     </p>

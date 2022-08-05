@@ -12,7 +12,7 @@ class BookloanController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $bookloans = Bookloan::latest()->get();
+            $bookloans = Bookloan::with(['member', 'book'])->latest()->get();
             return DataTables::of($bookloans)
                     ->addIndexColumn()
                     ->addColumn('checkbox', function ($row) {
@@ -113,5 +113,40 @@ class BookloanController extends Controller
         $customPaper = array(0,0,360,360);
         $pdf = PDF::loadView('bookloans.pdf', compact('bookloan'))->setPaper('letter', 'potrait');
         return $pdf->stream();
+    }
+
+    public function trash()
+    {
+        $bookloans = Bookloan::onlyTrashed()->with(['member', 'book'])->get();
+        return view('bookloans.trash', [
+            'title' => 'Data Sampah Pinjaman Buku',
+            'bookloans' => $bookloans,
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $bookloan = Bookloan::onlyTrashed()->where('id', $id);
+        $bookloan->restore();
+        toast('Data pinjaman buku berhasil dipulihkan!', 'success');
+        return redirect()->back();
+    }
+
+    public function deletePermanent($id)
+    {
+        $bookloan = Bookloan::onlyTrashed()->where('id', $id);
+        $bookloan->forceDelete();
+
+        toast('Data pinjaman buku berhasil dihapus permanen!', 'success');
+        return redirect()->back();
+    }
+
+    public function deleteAll()
+    {
+        $booklaons = Bookloan::onlyTrashed();
+        $booklaons->forceDelete();
+
+        toast('Semua data pinjaman buku berhasil dihapus permanen!', 'success');
+        return redirect()->back();
     }
 }

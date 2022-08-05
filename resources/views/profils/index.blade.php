@@ -39,7 +39,7 @@
                 <tbody>
                     <tr>
                         <td>{{ $profil->name }}</td>
-                        <td><img src="{{ $profil->takeImage }}" class="img-fluid"></td>
+                        <td><img src="{{ $profil->takeImage }}" class="img-fluid" width="20%"></td>
                         <td>
                             <div class="btn-group">
                                 <a class="badge badge-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">

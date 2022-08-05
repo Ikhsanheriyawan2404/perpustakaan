@@ -70,8 +70,8 @@
                                 <a class="badge badge-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" class="btn btn-sm btn-primary">Restore</a>
-                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                                    <a href="{{ route('books.restore', $book->id) }}" class="dropdown-item" class="btn btn-sm btn-primary">Restore</a>
+                                    <form action="{{ route('books.deletePermanent', $book->id) }}" method="POST">
                                         <button type="submit" class="dropdown-item" onclick="return confirm('Apakah yakin ingin menghapus ini?')">Hapus</button>
                                         @csrf
                                         @method('DELETE')
