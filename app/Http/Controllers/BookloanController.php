@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use DateTime;
 use App\Models\Fine;
 use App\Models\Profil;
 use App\Http\Requests\BookloanRequest;
@@ -35,6 +36,17 @@ class BookloanController extends Controller
                             $status = '<a class="badge badge-sm badge-success">Dikembalikan</a>';
                         }
                         return $status;
+                    })
+                    ->addColumn('fine', function ($row) {
+                        if ($row->status == 1 && date('Y-m-d') > $row->date_of_return) {
+                            $currentDate = new DateTime(date('Y-m-d'));
+                            $dateOfReturn = new DateTime($row->date_of_return);
+                            $interval = $dateOfReturn->diff($currentDate);
+                            $result = $interval->d * Fine::first()->nominal;
+                        } else {
+                            $result = 0;
+                        }
+                        return number_format($result);
                     })
                     ->addColumn('action', function($row){
                         $btn =

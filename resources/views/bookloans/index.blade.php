@@ -47,9 +47,8 @@
                         <th>Kode Pinjaman</th>
                         <th>Nama Peminjam</th>
                         <th>Buku</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Pengembalian</th>
                         <th>Status</th>
+                        <th>Denda</th>
                         <th class="text-center" style="width: 5%"><i class="fas fa-cogs"></i> </th>
                     </tr>
                 </thead>
@@ -134,7 +133,6 @@
                     <li class="list-group-item">Tanggal Pinjam : <i id="borrowDateLoan"></i></li>
                     <li class="list-group-item">Tanggal Pengembalian : <i id="dateOfReturnLoan"></i></li>
                     <li class="list-group-item">Status : <i id="statusLoan"></i></li>
-                    <li class="list-group-item">Denda : <i id="fineLoan"></i></li>
                 </ul>
             </div>
             <div class="modal-footer justify-content-between">
@@ -189,9 +187,8 @@
                     {data: 'credit_code', name: 'credit_code'},
                     {data: 'member_id', name: 'member.name'},
                     {data: 'book_id', name: 'book.title'},
-                    {data: 'borrow_date', name: 'borrow_date'},
-                    {data: 'date_of_return', name: 'date_of_return'},
                     {data: 'status', name: 'status'},
+                    {data: 'fine', name: 'fine', className: 'dt-body-right'},
                     {data: 'action', name: 'action', orderable: false, searchable: false, className: 'dt-body-center'},
                 ],
             }).on('draw', function() {

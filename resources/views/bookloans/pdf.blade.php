@@ -6,15 +6,14 @@
 </head>
 <body>
 	<style type="text/css">
-		table tr td,
-		table tr th{
-			font-size: 9pt;
-		}
+        table tr td,
+        table tr th{
+            font-size: 9pt;
+        }
 	</style>
 
     <h3>{{ $profil->name }}</h3>
-    <p>Tanggal Print : {{ date('Y-m-d') }}</p>
-	<table class='table table-bordered'>
+	<table class="table table-bordered" >
 		<thead>
 			<tr>
 				<th>Kode Pinjaman</th>
@@ -51,10 +50,30 @@
 			</tr>
 		</tbody>
 	</table>
-    <p>Perhatian :</p>
-    <p>Kertas ini jangan sampai hilang & Telat pengembalian buku akan dikenakan denda per hari @currency($fineNominal)</p>
-    <p>Paraf</p>
-    <br>
-    <p>{{ auth()->user()->name }}</p>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td>Perhatian :</td>
+                <td style="text-align: right">Tanggal Print : {{ date('Y-m-d') }}</td>
+            </tr>
+            <tr>
+                <td>- Kertas ini jangan sampai hilang</td>
+            </tr>
+            <tr>
+                <td>- Telat pengembalian buku akan dikenakan denda per hari @currency($fineNominal)</td>
+            </tr>
+            <br>
+            <tr>
+                <td></td>
+                <td style="text-align: right">Paraf</td>
+            </tr>
+            <br>
+            <br>
+            <tr>
+                <td></td>
+                <td style="text-align: right">{{ auth()->user()->name }}</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
