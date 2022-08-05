@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use App\Models\Fine;
+use App\Models\Profil;
 use App\Http\Requests\BookloanRequest;
 use App\Models\{Book, Member, Bookloan};
 use Yajra\DataTables\Facades\DataTables;
@@ -41,7 +43,7 @@ class BookloanController extends Controller
                             </a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="javascript:void(0)" data-id="'.$row->id.'" id="showBookLoan" class="btn btn-sm btn-primary">View</a>
-                                <form action="' . route('bookloans.printPdf', $row->id) . '" method="post">
+                                <form target="_blank" action="' . route('bookloans.printPdf', $row->id) . '" method="post">
                                     ' . csrf_field() . '
                                     <button type="submit" class="dropdown-item" class="btn btn-sm btn-primary">Print</button>
                                 </form>
@@ -111,7 +113,9 @@ class BookloanController extends Controller
     {
         // $pdf = app('dompdf.wrapper');
         $customPaper = array(0,0,360,360);
-        $pdf = PDF::loadView('bookloans.pdf', compact('bookloan'))->setPaper('letter', 'potrait');
+        $fineNominal = Fine::first()->nominal;
+        $profil = Profil::first();
+        $pdf = PDF::loadView('bookloans.pdf', compact('bookloan', 'fineNominal', 'profil'))->setPaper('a5', 'landscape');
         return $pdf->stream();
     }
 

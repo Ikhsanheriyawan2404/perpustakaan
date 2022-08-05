@@ -226,6 +226,7 @@
                     $('#borrowDateLoan').html(data.borrow_date);
                     $('#dateOfReturnLoan').html(data.date_of_return);
                     $('#statusLoan').html((data.status == 2) ? 'Dikembalikan' : 'Masih Di Peminjam');
+                    // var jumlahtelat = new Date() - date_of_return;
                     // $('#fineLoan').html((new Date() > data.date_of_return) : 'telat' : 'nggktelat');
                 })
             });

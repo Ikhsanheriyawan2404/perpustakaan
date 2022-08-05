@@ -12,6 +12,8 @@
 		}
 	</style>
 
+    <h3>{{ $profil->name }}</h3>
+    <p>Tanggal Print : {{ date('Y-m-d') }}</p>
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
@@ -21,6 +23,7 @@
 				<th>Tgl Pinjam</th>
 				<th>Tgl Pengembalian</th>
 				<th>Paraf</th>
+				<th>Denda</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,9 +34,27 @@
 				<td>{{ $bookloan->borrow_date }}</td>
 				<td>{{ $bookloan->date_of_return }}</td>
 				<td>{{ $bookloan->admin }}</td>
+				<td>
+                    @php
+                    // Dimana status 1. dan juga melebihi batas waktu pengembalian.
+                        if ($bookloan->status == 1 && $bookloan->date_of_return < date('Y-m-d')) {
+                            $currentDate = new DateTime(date('Y-m-d'));
+                            $dateOfReturn = new DateTime($bookloan->date_of_return);
+                            $interval = $dateOfReturn->diff($currentDate);
+                            $result = $interval->d * $fineNominal;
+                        } else {
+                            $result = 0;
+                        }
+                    @endphp
+                    @currency($result)
+                </td>
 			</tr>
 		</tbody>
 	</table>
-
+    <p>Perhatian :</p>
+    <p>Kertas ini jangan sampai hilang & Telat pengembalian buku akan dikenakan denda per hari @currency($fineNominal)</p>
+    <p>Paraf</p>
+    <br>
+    <p>{{ auth()->user()->name }}</p>
 </body>
 </html>
