@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Exports\MembersExport;
 use App\Imports\MembersImport;
 use App\Http\Requests\MemberRequest;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -16,14 +17,20 @@ class MemberController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $members = Member::latest()->get();
+            $members = Member::with('bookloan')->latest()->get();
             return DataTables::of($members)
                 ->addIndexColumn()
                 ->addColumn('checkbox', function ($row) {
                     return '<input type="checkbox" name="checkbox" id="check" class="checkbox" data-id="' . $row->id . '">';
                 })
                 ->editColumn('status', function ($row) {
-                    return $row->status != 1 ? '<a class="badge badge-sm badge-danger">Danger <i class="fa fa-times-circle"></i></a>' : '<a class="badge badge-sm badge-success">Good <i class="fa fa-check-circle"></i></a>';
+                    return $row->bookloan
+                        ->where('status', 1)
+                        ->where('date_of_return', '<',  Carbon::now())->isEmpty()
+                        ?
+                        '<a class="badge badge-sm badge-success">Good <i class="fa fa-check-circle"></i></a>'
+                        :
+                        '<a class="badge badge-sm badge-danger">Danger <i class="fa fa-times-circle"></i></a>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn =
@@ -45,6 +52,13 @@ class MemberController extends Controller
                 ->rawColumns(['status', 'checkbox', 'image', 'action'])
                 ->make(true);
         }
+        // $member = Member::whereHas('bookloan', function ($q) {
+        //     $q->where('status', 1);
+        //     $q->where('date_of_return', '<', Carbon::now());
+        // })->where('id', 1)->get();
+
+        // $row = Member::with('bookloan')->find(2);
+        // dd(response()->json($row->bookloan->where('status', 2)->isEmpty()  ));
         return view('members.index', [
             'title' => 'Data Anggota',
         ]);

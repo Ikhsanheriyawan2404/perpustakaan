@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use PDF;
 use DateTime;
-use App\Models\Fine;
-use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\BookloanRequest;
-use App\Models\{Book, Member, Bookloan};
+use App\Models\{Book, Member, Bookloan, Fine, Profil};
+use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookloanController extends Controller
@@ -35,21 +34,22 @@ class BookloanController extends Controller
                         return $bookloan->book->title;
                     })
                     ->addColumn('status', function ($row) {
-                        if ($row->status == 1 && date('Y-m-d') < $row->date_of_return) {
-                            $status = '<a class="badge badge-sm badge-warning">Dipinjam</a>';
-                        } else if ($row->status == 1 && date('Y-m-d') > $row->date_of_return) {
+                        if ($row->status == 1 && \Carbon\Carbon::now() < $row->date_of_return) {
+                            $status = '<a class="badge badge-sm badge-warning">
+                            Dipinjam</a>';
+                        } else if ($row->status == 1 && \Carbon\Carbon::now() > $row->date_of_return) {
                             $status = '<a class="badge badge-sm badge-danger">Telat</a>';
-                        } else {
+                        } else if($row->status == 2) {
                             $status = '<a class="badge badge-sm badge-success">Dikembalikan</a>';
                         }
                         return $status;
                     })
                     ->addColumn('fine', function ($row) {
                         if ($row->status == 1 && date('Y-m-d') > $row->date_of_return) {
-                            $currentDate = new DateTime(date('Y-m-d'));
-                            $dateOfReturn = new DateTime($row->date_of_return);
-                            $interval = $dateOfReturn->diff($currentDate);
-                            $result = $interval->d * Fine::first()->nominal;
+                            $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
+                            $dateOfReturn = \Carbon\Carbon::parse($row->date_of_return);
+                            $interval = $dateOfReturn->diffInDays($currentDate);
+                            $result = $interval * Fine::first()->nominal;
                         } else {
                             $result = 0;
                         }
