@@ -77,7 +77,7 @@
                 <input type="hidden" name="bookloan_id" id="bookloan_id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="member_id">Kategori</label>
+                        <label for="member_id">Nama Peminjam</label>
                         <select name="member_id" id="member_id" class="form-control form-control-sm select2" required>
                             <option selected disabled>Pilih anggota</option>
                             @foreach ($members as $data)
@@ -86,7 +86,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="book_id">Kategori</label>
+                        <label for="book_id">Buku</label>
                         <select name="book_id" id="book_id" class="form-control form-control-sm select2" required>
                             <option selected disabled>Pilih buku</option>
                             @foreach ($books as $data)
